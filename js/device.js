@@ -3,11 +3,14 @@
     'use strict';
     var socket = io.connect(window.location.origin);
 
-    var logger = (function (destinationSocket) {
-        return {
-            log: function (message) { destinationSocket.emit('log', { 'message': message }); }
-        };
-    })(socket);
+    var Logger = function (destinationSocket) {
+        this.destinationSocket = destinationSocket;
+    };
+    Logger.prototype.log = function (message) {
+        this.destinationSocket.emit('log', { 'message': message });
+    };
+
+    var logger = new Logger(socket);
 
     logger.log('device is fired up');
 
