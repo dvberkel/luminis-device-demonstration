@@ -11,6 +11,10 @@ io.sockets.on('connection', function(socket){
     console.log('socket %s connected', socket.id);
     socket.emit('id', { 'id': socket.id });
 
+    socket.on('presentation', function(){
+	console.log('presentation received');
+    });
+
     socket.on('log', function(data){
 	console.log(data.message);
     })
