@@ -1,7 +1,6 @@
-/* global window:false, io:false */
+/* global window:false, document:false, io:false */
 (function (io) {
     'use strict';
-    var socket = io.connect(window.location.origin);
 
     var Logger = function (destinationSocket) {
         this.destinationSocket = destinationSocket;
@@ -10,12 +9,24 @@
         this.destinationSocket.emit('log', { 'message': message });
     };
 
+    var BackgroundSetter = function (element) {
+        this.element = element;
+    };
+    BackgroundSetter.prototype.set = function (color) {
+        this.element.style.background = color;
+    };
+
+    var socket = io.connect(window.location.origin);
+
     var logger = new Logger(socket);
+    var background = new BackgroundSetter(document.body);
+    background.set('gray');
 
     logger.log('device is fired up');
 
     if (window.DeviceMotionEvent) {
         logger.log('DeviceMotion is enabled');
+        background.set('green');
         window.addEventListener('devicemotion', function (event) {
             socket.emit('motion', {
                 timestamp: (new Date()).getTime(),
@@ -26,5 +37,6 @@
         }, false);
     } else {
         logger.log('DeviceMotion is disabled');
+        background.set('red');
     }
 })(io);
