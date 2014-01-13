@@ -8,5 +8,8 @@
             }
         }
     ],
-    "capabilities.md"
+    [
+	"capabilities.md",
+	"can-i-use.md"
+    ]
 ]
