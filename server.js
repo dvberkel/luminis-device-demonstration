@@ -9,6 +9,7 @@ app.use('/static', express.static(__dirname + '/dist'));
 
 io.sockets.on('connection', function(socket){
     console.log('socket %s connected', socket.id);
+    socket.emit('id', { 'id': socket.id });
 
     socket.on('log', function(data){
 	console.log(data.message);

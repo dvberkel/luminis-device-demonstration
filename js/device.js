@@ -1,5 +1,5 @@
 /* global window:false, document:false, io:false */
-(function (io) {
+(function (io, undefined) {
     'use strict';
 
     var Logger = function (destinationSocket) {
@@ -16,9 +16,53 @@
         this.element.style.background = color;
     };
 
-    var socket = io.connect(window.location.origin);
+    var Id = function () {
+        this.listeners = [];
+        this.value = 'unknown id';
+    };
+    Id.prototype.addListener = function (callback) {
+        this.listeners.push(callback);
+    };
+    Id.prototype.notify = function () {
+        this.listeners.forEach(function (callback) {
+            callback.call(this, this);
+        }.bind(this));
+    };
+    Id.prototype.set = function (value) {
+        this.value = value;
+        this.notify();
+    };
+    Id.prototype.get = function () {
+        return this.value;
+    };
+    Id.prototype.receive = function (data) {
+        this.set(data.id);
+    };
 
+    var IdView = function (parent, model) {
+        this.parent = parent;
+        this.model = model;
+        model.addListener(this.update.bind(this));
+    };
+    IdView.prototype.update = function () {
+        var container = this.container();
+        container.textContent = this.model.get();
+    };
+    IdView.prototype.container = function () {
+        if (this._container === undefined) {
+            var container = this._container = document.createElement('span');
+            this.parent.appendChild(container);
+        }
+        return this._container;
+    };
+
+    var socket = io.connect(window.location.origin);
     var logger = new Logger(socket);
+
+    var id = new Id();
+    new IdView(document.getElementsByTagName('body')[0], id);
+    socket.on('id', id.receive.bind(id));
+
     var background = new BackgroundSetter(document.body);
     background.set('gray');
 
@@ -28,6 +72,7 @@
         logger.log('DeviceMotion is enabled');
         background.set('green');
         window.addEventListener('devicemotion', function (event) {
+            event = 1;
             socket.emit('motion', {
                 timestamp: (new Date()).getTime(),
                 x: event.acceleration.x,
