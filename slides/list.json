@@ -1,11 +1,12 @@
 [
     "index.md",
     [
-	"device-evolution.md",
-	{
-	    "attr": {
-		"data-background": "image/first_mobile_phone.jpg"
-	    }
-	}
-    ]
+        "device-evolution.md",
+        {
+            "attr": {
+                "data-background": "image/first_mobile_phone.jpg"
+            }
+        }
+    ],
+    "capabilities.md"
 ]
