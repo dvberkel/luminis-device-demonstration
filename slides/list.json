@@ -9,7 +9,10 @@
         }
     ],
     [
-	"capabilities.md",
-	"can-i-use.md"
+        "capabilities.md",
+        "can-i-use.md"
+    ],
+    [
+	"device-orientation.md"
     ]
 ]
