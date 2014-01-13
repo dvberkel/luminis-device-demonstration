@@ -30,12 +30,12 @@ module.exports = (grunt) ->
             jshint:
                 files: ['js/*.js']
                 tasks: ['jshint']
-        
+
         connect:
 
             livereload:
                 options:
-                    port: 9000
+                    port: 3435
                     # Change hostname to '0.0.0.0' to access
                     # the server from outside.
                     hostname: 'localhost'
