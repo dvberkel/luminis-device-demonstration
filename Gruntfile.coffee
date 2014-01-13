@@ -10,6 +10,7 @@ module.exports = (grunt) ->
                     livereload: true
                 files: [
                     'index.html'
+                    'device.html'
                     'slides/*.md'
                     'slides/*.html'
                     'js/*.js'
@@ -66,8 +67,9 @@ module.exports = (grunt) ->
                     src: [
                         'slides/**',
                         'image/**',
-                        'bower_components/**'
-                        'js/**'
+                        'bower_components/**',
+                        'js/**',
+                        'device.html'
                     ]
                     dest: 'dist/'
                 },{
