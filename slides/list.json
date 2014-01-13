@@ -13,6 +13,7 @@
         "can-i-use.md"
     ],
     [
-	"device-orientation.md"
+        "device-orientation.md",
+	"data-acquisition.md"
     ]
 ]
