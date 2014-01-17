@@ -16,10 +16,24 @@
         this.element.style.background = color;
     };
 
+    var Observable = function () {
+        this.listeners = [];
+    };
+    Observable.prototype.addListener = function (callback) {
+        this.listeners.push(callback);
+    };
+    Observable.prototype.notify = function () {
+        this.listeners.forEach(function (callback) {
+            callback.call(this, this);
+        }.bind(this));
+    };
+
     var Id = function () {
+        Observable.call(this);
         this.listeners = [];
         this.value = 'unknown id';
     };
+    Id.prototype = new Observable();
     Id.prototype.addListener = function (callback) {
         this.listeners.push(callback);
     };
@@ -72,7 +86,6 @@
         logger.log('DeviceMotion is enabled');
         background.set('green');
         window.addEventListener('devicemotion', function (event) {
-            event = 1;
             socket.emit('motion', {
                 timestamp: (new Date()).getTime(),
                 x: event.acceleration.x,
