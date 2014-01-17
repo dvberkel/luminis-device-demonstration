@@ -1,5 +1,5 @@
-/* global window:false, document:false, io:false */
-(function (io, undefined) {
+/* global window:false, document:false, io:false, Observable:false */
+(function (io, Observable, undefined) {
     'use strict';
 
     var Logger = function (destinationSocket) {
@@ -14,18 +14,6 @@
     };
     BackgroundSetter.prototype.set = function (color) {
         this.element.style.background = color;
-    };
-
-    var Observable = function () {
-        this.listeners = [];
-    };
-    Observable.prototype.addListener = function (callback) {
-        this.listeners.push(callback);
-    };
-    Observable.prototype.notify = function () {
-        this.listeners.forEach(function (callback) {
-            callback.call(this, this);
-        }.bind(this));
     };
 
     var Id = function () {
@@ -97,4 +85,4 @@
         logger.log('DeviceMotion is disabled');
         background.set('red');
     }
-})(io);
+})(io, Observable);
