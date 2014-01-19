@@ -21,11 +21,12 @@
                 "data-state": "motion-events"
             }
         },
-	{
-	    "filename": "total.html",
-	    "attr": {
-		"data-state": "total-events"
-	    }
-	}
+        "math.html",
+        {
+            "filename": "total.html",
+            "attr": {
+                "data-state": "total-events"
+            }
+        }
     ]
 ]
