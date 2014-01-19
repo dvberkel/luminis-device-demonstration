@@ -58,8 +58,40 @@
         return this._container;
     };
 
+    var MotionEventHandlers = function () {
+        this.handlers = [];
+    };
+    MotionEventHandlers.prototype.addHandler = function (handler) {
+        this.handlers.push(handler);
+    };
+    MotionEventHandlers.prototype.handle = function (event) {
+        var acceleration = event.acceleration;
+        this.handlers.forEach(function (handler) {
+            handler.call(handler, acceleration);
+        });
+    };
+
     var socket = io.connect(window.location.origin);
     var logger = new Logger(socket);
+
+    var motionHandler = function (acceleration) {
+        socket.emit('motion', {
+            timestamp: (new Date()).getTime(),
+            x: acceleration.x,
+            y: acceleration.y,
+            z: acceleration.z
+        });
+    };
+    var totalHandler = function (acceleration) {
+        socket.emit('total', {
+            timestamp: (new Date()).getTime(),
+            total: Math.sqrt(
+                Math.pow(acceleration.x, 2) +
+                    Math.pow(acceleration.y, 2) +
+                    Math.pow(acceleration.z, 2)
+            )
+        });
+    };
 
     var id = new Id();
     new IdView(document.getElementsByTagName('body')[0], id);
@@ -73,14 +105,10 @@
     if (window.DeviceMotionEvent) {
         logger.log('DeviceMotion is enabled');
         background.set('green');
-        window.addEventListener('devicemotion', function (event) {
-            socket.emit('motion', {
-                timestamp: (new Date()).getTime(),
-                x: event.acceleration.x,
-                y: event.acceleration.y,
-                z: event.acceleration.z
-            });
-        }, false);
+        var handlers = new MotionEventHandlers();
+        handlers.addHandler(motionHandler);
+        handlers.addHandler(totalHandler);
+        window.addEventListener('devicemotion', handlers.handle.bind(handlers), false);
     } else {
         logger.log('DeviceMotion is disabled');
         background.set('red');

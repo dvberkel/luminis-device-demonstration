@@ -30,6 +30,15 @@ io.sockets.on('connection', function(socket){
 	    presentations[id].emit('motion', event);
 	}
     });
+
+    socket.on('total', function(event){
+	event.id = socket.id;
+	for (var id in presentations) {
+            console.log(event);
+
+	    presentations[id].emit('total', event);
+	}
+    });
 });
 
 server.listen(app.get('PORT'));

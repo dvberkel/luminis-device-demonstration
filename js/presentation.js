@@ -1,4 +1,4 @@
-/* global window:false, document:false, Reveal:false, io:false, Motion:false */
+/* global window:false, document:false, Reveal:false, io:false, Motion:false, console:false */
 (function (Reveal, io, Motion, undefined) {
     'use strict';
 
@@ -16,5 +16,9 @@
 
     socket.on('motion', function (event) {
         motionDataMap.update(event.id, event);
+    });
+
+    socket.on('total', function (event) {
+        console.log(event);
     });
 })(Reveal, io, Motion);
