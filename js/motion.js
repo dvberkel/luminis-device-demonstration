@@ -72,20 +72,6 @@ window.Motion = (function (Observable) {
         return this.parent;
     };
 
-    var Data = Motion.Data = function () {
-        Base.call(this);
-        this.x = 0;
-        this.y = 0;
-        this.z = 0;
-
-    };
-    Data.prototype = new Base();
-
-    var DataMap = Motion.DataMap = function () {
-        BaseMap.call(this);
-    };
-    DataMap.prototype = new BaseMap();
-
     var standardFormatter = function (value) { return value; };
 
     var AttributeView = Motion.AttributeView = function (model, attribute, parent, formatter) {
@@ -109,6 +95,19 @@ window.Motion = (function (Observable) {
         return this._container;
     };
 
+    var Data = Motion.Data = function () {
+        Base.call(this);
+        this.x = 0;
+        this.y = 0;
+        this.z = 0;
+    };
+    Data.prototype = new Base();
+
+    var DataMap = Motion.DataMap = function () {
+        BaseMap.call(this);
+    };
+    DataMap.prototype = new BaseMap();
+
     var DataView = Motion.DataView = function (model, parent) {
         BaseView.call(this, model, parent);
         this.create();
@@ -122,13 +121,41 @@ window.Motion = (function (Observable) {
         new AttributeView(this.model, 'z', container, Motion.format.decimal(2));
     };
 
-
     var DataMapView = Motion.DataMapView = function (model, parent) {
         BaseMapView.call(this, model, parent, DataView);
         this.register();
         this.update();
     };
     DataMapView.prototype = new BaseMapView();
+
+    var Total = Motion.Total = function () {
+        Base.call(this);
+        this.total = 0;
+    };
+    Total.prototype = new Base();
+
+    var TotalMap = Motion.TotalMap = function () {
+        BaseMap.call(this);
+    };
+    TotalMap.prototype = new BaseMap();
+
+    var TotalView = Motion.TotalView = function (model, parent) {
+        BaseView.call(this, model, parent);
+        this.create();
+    };
+    TotalView.prototype = new BaseView();
+    TotalView.prototype.create = function () {
+        var container = this.container('total');
+        new AttributeView(this.model, 'id', container);
+        new AttributeView(this.model, 'total', container, Motion.format.decimal(2));
+    };
+
+    var TotalMapView = Motion.TotalMapView = function (model, parent) {
+        BaseMapView.call(this, model, parent, TotalView);
+        this.register();
+        this.update();
+    };
+    TotalMapView.prototype = new BaseMapView();
 
     Motion.format = {};
     Motion.format.standard = standardFormatter;

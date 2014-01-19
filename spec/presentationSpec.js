@@ -225,4 +225,136 @@ describe('Motion', function(){
 	    });
 	});
     });
+
+    describe('Total', function(){
+	var data;
+
+	beforeEach(function(){
+	    data = new Motion.Total();
+	});
+
+	it('should exist', function(){
+	    expect(Motion.Total).toBeDefined();
+	});
+
+	it('should have a default id attribute', function(){
+	    expect(data.id).toBe('?');
+	});
+
+	it('should have default attributes \'total\'', function(){
+	    expect(data.total).toBe(0);
+	});
+
+	it('should change attributes upon an update', function(){
+	    var event = { total: 1 };
+
+	    data.update(event);
+
+	    expect(data.total).toBe(event.total);
+	});
+
+	it('should notify of an update', function(){
+	    var called = false;
+	    data.addListener(function(){ called = true });
+
+	    data.update({ total: 3 });
+
+	    expect(called).toBe(true);
+	});
+    });
+
+    describe('TotalMap', function(){
+	var datas;
+
+	beforeEach(function(){
+	    datas = new Motion.TotalMap();
+	});
+
+	it('should exist', function(){
+	    expect(Motion.TotalMap).toBeDefined();
+	});
+
+	it('should notify of new updates', function(){
+	    var callCount = 0;
+	    datas.addListener(function(){ callCount++; });
+
+	    datas.update('a', { total:1 });
+	    expect(callCount).toBe(1);
+
+	    datas.update('a', { total:2 });
+	    expect(callCount).toBe(1);
+	});
+
+	it('should return the data', function(){
+	    var data = datas.update('a', { total:1 });
+
+	    expect(data).toBeDefined();
+	});
+    });
+
+    describe('TotalView', function(){
+	var parent;
+	var model;
+
+	beforeEach(function(){
+	    parent = document.createElement('div');
+	});
+
+	beforeEach(function(){
+	    model = new Motion.Total();
+	    model.update({ id: 'a', total: 1 });
+	});
+
+	it('should exist', function(){
+	    expect(Motion.TotalView).toBeDefined();
+	});
+
+	it('should add Attribute views for each attribute to the parent', function(){
+	    var view = new Motion.TotalView(model, parent);
+
+	    expect(parent.children.length).toBe(1);
+	    expect(parent.children.item(0).children.length).toBe(2);
+	    expect(parent.children.item(0).children.item(0).textContent).toBe('a');
+	    expect(parent.children.item(0).children.item(1).textContent).toBe('1.00');
+	});
+
+	it('should give a \'total\'-class to the container', function(){
+	    var view = new Motion.TotalView(model, parent);
+
+	    expect(parent.children.item(0).getAttribute('class')).toBe('total');
+	});
+    });
+
+    describe('TotalMapView', function(){
+	var parent;
+	var model;
+
+	it('should exist', function(){
+	    expect(Motion.TotalMapView).toBeDefined();
+	});
+
+	beforeEach(function(){
+	    parent = document.createElement('div');
+	});
+
+	beforeEach(function(){
+	    model = new Motion.TotalMap();
+	    model.update('a', { total: 1 });
+	});
+
+	it('should create TotalView', function(){
+	    var totalMapView = new Motion.TotalMapView(model, parent);
+
+	    expect(parent.children.length).toBe(1);
+	});
+
+	it('should add TotalView when new event source registers', function(){
+	    var totalMapView = new Motion.DataMapView(model, parent);
+
+	    model.update('b', { total: 3 });
+
+	    expect(parent.children.length).toBe(2);
+	});
+
+    });
 });
