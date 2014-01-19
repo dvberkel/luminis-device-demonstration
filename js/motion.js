@@ -31,6 +31,8 @@ window.Motion = (function (Observable) {
         this.collection[id].update(event);
         if (isNew) {
             this.notify();
+        } else {
+            this.notify('update');
         }
         return this.collection[id];
     };
@@ -168,6 +170,8 @@ window.Motion = (function (Observable) {
     var SumView = Motion.SumView = function (model, parent) {
         this.model = model;
         this.parent = parent;
+        this.model.addListener(this.update.bind(this));
+        this.model.addListener('update', this.update.bind(this));
         this.update();
     };
     SumView.prototype.update = function () {

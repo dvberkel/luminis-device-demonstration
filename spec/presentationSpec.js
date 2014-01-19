@@ -426,7 +426,7 @@ describe('Motion', function(){
 	    expect(parent.textContent).toBe('6');
 	});
 
-	xit('should update when one of the models changes', function(){
+	it('should update when one of the models changes', function(){
 	    var sumView = new Motion.SumView(model, parent);
 
 	    model.update('a', { total: 2 });
