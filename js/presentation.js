@@ -1,4 +1,4 @@
-/* global window:false, document:false, Reveal:false, io:false, Motion:false, console:false */
+/* global window:false, document:false, Reveal:false, io:false, Motion:false */
 (function (Reveal, io, Motion, undefined) {
     'use strict';
 

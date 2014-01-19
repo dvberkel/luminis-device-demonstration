@@ -69,6 +69,7 @@ module.exports = (grunt) ->
                         'image/**',
                         'bower_components/**',
                         'js/**',
+                        'css/**',
                         'device.html'
                     ]
                     dest: 'dist/'

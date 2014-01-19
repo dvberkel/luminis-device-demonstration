@@ -95,6 +95,12 @@ describe('Motion', function(){
 	    expect(parent.children.length).toBe(1);
 	});
 
+	it('should add \'attribute\'-class to the span', function(){
+	    var view = new Motion.AttributeView(model, 'x', parent);
+
+	    expect(parent.children.item(0).getAttribute('class')).toBe('attribute');
+	});
+
 	it('should write data to the span', function(){
 	    var view = new Motion.AttributeView(model, 'x', parent);
 
@@ -137,6 +143,12 @@ describe('Motion', function(){
 	    expect(parent.children.item(0).children.item(1).textContent).toBe('1');
 	    expect(parent.children.item(0).children.item(2).textContent).toBe('2');
 	    expect(parent.children.item(0).children.item(3).textContent).toBe('3');
+	});
+
+	it('should give a \'motion\'-class to the container', function(){
+	    var view = new Motion.DataView(model, parent);
+
+	    expect(parent.children.item(0).getAttribute('class')).toBe('motion');
 	});
     });
 

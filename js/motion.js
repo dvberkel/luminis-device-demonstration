@@ -52,8 +52,9 @@ window.Motion = (function (Observable) {
     };
     AttributeView.prototype.container = function () {
         if (! this._container) {
-            this._container = document.createElement('span');
-            this.parent.appendChild(this._container);
+            var container = this._container = document.createElement('span');
+            container.setAttribute('class', 'attribute');
+            this.parent.appendChild(container);
         }
         return this._container;
     };
@@ -72,8 +73,9 @@ window.Motion = (function (Observable) {
     };
     DataView.prototype.container = function () {
         if (! this._container) {
-            this._container = document.createElement('div');
-            this.parent.appendChild(this._container);
+            var container = this._container = document.createElement('div');
+            container.setAttribute('class', 'motion');
+            this.parent.appendChild(container);
         }
         return this._container;
     };
