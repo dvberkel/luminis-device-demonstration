@@ -1,3 +1,38 @@
+describe('Observable', function(){
+    var observable;
+
+    beforeEach(function(){
+	observable = new Observable();
+    });
+
+    it('should exist', function(){
+	expect(Observable).toBeDefined();
+    });
+
+    it('should be possible to register a callback', function(){
+	var called = false;
+	observable.addListener(function(){ called = true; });
+
+	observable.notify();
+
+	expect(called).toBe(true);
+    });
+
+    it('should be possible to register a specific callback', function(){
+	var called = false;
+	observable.addListener('specific', function(){ called = true; });
+
+	observable.notify('general');
+
+	expect(called).toBe(false);
+
+	observable.notify('specific');
+
+	expect(called).toBe(true);
+    });
+
+});
+
 describe('Motion', function(){
     it('should exist', function(){
 	expect(Motion).toBeDefined();
@@ -290,6 +325,14 @@ describe('Motion', function(){
 
 	    expect(data).toBeDefined();
 	});
+
+	it('should calculate the sum of entries', function(){
+	    datas.update('a', { total:1 });
+	    datas.update('b', { total:2 });
+	    datas.update('c', { total:3 });
+
+	    expect(datas.sum()).toBe(6);
+	});
     });
 
     describe('TotalView', function(){
@@ -355,6 +398,40 @@ describe('Motion', function(){
 
 	    expect(parent.children.length).toBe(2);
 	});
+    });
 
+    describe('SumView', function(){
+	var parent;
+	var model;
+
+	it('should exist', function(){
+	    expect(Motion.SumView).toBeDefined();
+	});
+
+	beforeEach(function(){
+	    parent = document.createElement('div');
+	});
+
+	beforeEach(function(){
+	    model = new Motion.TotalMap();
+	    model.update('a', { total: 1 });
+	    model.update('b', { total: 2 });
+	    model.update('c', { total: 3 });
+	});
+
+	it('should create sum', function(){
+	    var sumView = new Motion.SumView(model, parent);
+
+	    expect(model.sum()).toBe(6);
+	    expect(parent.textContent).toBe('6');
+	});
+
+	xit('should update when one of the models changes', function(){
+	    var sumView = new Motion.SumView(model, parent);
+
+	    model.update('a', { total: 2 });
+
+	    expect(parent.textContent).toBe('7');
+	});
     });
 });

@@ -139,6 +139,13 @@ window.Motion = (function (Observable) {
         BaseMap.call(this, Total);
     };
     TotalMap.prototype = new BaseMap();
+    TotalMap.prototype.sum = function () {
+        var sum = 0;
+        for (var key in this.collection) {
+            sum += this.collection[key].total;
+        }
+        return sum;
+    };
 
     var TotalView = Motion.TotalView = function (model, parent) {
         BaseView.call(this, model, parent);
@@ -157,6 +164,19 @@ window.Motion = (function (Observable) {
         this.update();
     };
     TotalMapView.prototype = new BaseMapView();
+
+    var SumView = Motion.SumView = function (model, parent) {
+        this.model = model;
+        this.parent = parent;
+        this.update();
+    };
+    SumView.prototype.update = function () {
+        var container = this.container();
+        container.textContent = this.model.sum();
+    };
+    SumView.prototype.container = function () {
+        return this.parent;
+    };
 
     Motion.format = {};
     Motion.format.standard = standardFormatter;
