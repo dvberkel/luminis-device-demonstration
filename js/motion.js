@@ -39,16 +39,19 @@ window.Motion = (function (Observable) {
         return this.collection[id];
     };
 
-    var AttributeView = Motion.AttributeView = function (model, attribute, parent) {
+    var standarFormatter = function (value) { return value; };
+
+    var AttributeView = Motion.AttributeView = function (model, attribute, parent, formatter) {
         this.model = model;
         this.attribute = attribute;
         this.parent = parent;
+        this.formatter = formatter || standarFormatter;
         this.model.addListener(this.update.bind(this));
         this.update();
     };
     AttributeView.prototype.update = function () {
         var container = this.container();
-        container.textContent = this.model[this.attribute];
+        container.textContent = this.formatter(this.model[this.attribute]);
     };
     AttributeView.prototype.container = function () {
         if (! this._container) {
@@ -67,9 +70,9 @@ window.Motion = (function (Observable) {
     DataView.prototype.create = function () {
         var container = this.container();
         new AttributeView(this.model, 'id', container);
-        new AttributeView(this.model, 'x', container);
-        new AttributeView(this.model, 'y', container);
-        new AttributeView(this.model, 'z', container);
+        new AttributeView(this.model, 'x', container, Motion.format.decimal(2));
+        new AttributeView(this.model, 'y', container, Motion.format.decimal(2));
+        new AttributeView(this.model, 'z', container, Motion.format.decimal(2));
     };
     DataView.prototype.container = function () {
         if (! this._container) {
@@ -99,6 +102,14 @@ window.Motion = (function (Observable) {
     };
     DataMapView.prototype.container = function () {
         return this.parent;
+    };
+
+    Motion.format = {};
+    Motion.format.standard = standarFormatter;
+    Motion.format.decimal = function (decimals) {
+        return function (value) {
+            return Number(value).toFixed(decimals);
+        };
     };
 
     return Motion;

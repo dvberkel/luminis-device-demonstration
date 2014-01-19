@@ -73,7 +73,7 @@ describe('Motion', function(){
 	});
     });
 
-     describe('AttributeView', function(){
+    describe('AttributeView', function(){
 	var parent;
 	var model;
 
@@ -115,6 +115,15 @@ describe('Motion', function(){
 
 	    expect(parent.children.item(0).textContent).toBe('' + event.x);
 	});
+
+	it('should use passed formatter', function(){
+	    var view = new Motion.AttributeView(model, 'x', parent, function () { return 'success'; });
+
+	    model.update({ x: 1, y: 2, z: 3 });
+
+	    expect(parent.children.item(0).textContent).toBe('success');
+	});
+
     });
 
     describe('DataView', function(){
@@ -140,9 +149,9 @@ describe('Motion', function(){
 	    expect(parent.children.length).toBe(1);
 	    expect(parent.children.item(0).children.length).toBe(4);
 	    expect(parent.children.item(0).children.item(0).textContent).toBe('a');
-	    expect(parent.children.item(0).children.item(1).textContent).toBe('1');
-	    expect(parent.children.item(0).children.item(2).textContent).toBe('2');
-	    expect(parent.children.item(0).children.item(3).textContent).toBe('3');
+	    expect(parent.children.item(0).children.item(1).textContent).toBe('1.00');
+	    expect(parent.children.item(0).children.item(2).textContent).toBe('2.00');
+	    expect(parent.children.item(0).children.item(3).textContent).toBe('3.00');
 	});
 
 	it('should give a \'motion\'-class to the container', function(){
@@ -183,5 +192,37 @@ describe('Motion', function(){
 	    expect(parent.children.length).toBe(2);
 	});
 
+    });
+
+    describe('format', function(){
+	it('should exist', function(){
+	    expect(Motion.format).toBeDefined();
+	});
+
+	describe('standard', function(){
+	    it('should exist', function(){
+		expect(Motion.format.standard).toBeDefined();
+	    });
+
+	    it('should return value unmodified', function(){
+		['a', 0, 1.0].forEach(function (value) {
+		    expect(Motion.format.standard(value)).toBe(value);
+		});
+	    });
+	});
+
+	describe('decimal', function(){
+	    it('should exist', function(){
+		expect(Motion.format.decimal).toBeDefined();
+	    });
+
+	    it('should return format number to certain precision', function(){
+		expect(Motion.format.decimal(1)(0.123456)).toBe('0.1');
+		expect(Motion.format.decimal(2)(0.123456)).toBe('0.12');
+		expect(Motion.format.decimal(3)(0.123456)).toBe('0.123');
+		expect(Motion.format.decimal(4)(0.123456)).toBe('0.1235');
+		expect(Motion.format.decimal(5)(0.123456)).toBe('0.12346');
+	    });
+	});
     });
 });
