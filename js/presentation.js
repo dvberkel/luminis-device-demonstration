@@ -3,7 +3,6 @@
     'use strict';
 
     var motionDataMap = new Motion.DataMap();
-    motionDataMap.update('a', { x: 1, y: 0, z: 0 });
 
     var motionDataMapView;
     Reveal.addEventListener('motion-events', function () {
@@ -14,4 +13,8 @@
 
     var socket = io.connect(window.location.origin);
     socket.emit('presentation', {});
+
+    socket.on('motion', function (event) {
+        motionDataMap.update(event.id, event);
+    });
 })(Reveal, io, Motion);

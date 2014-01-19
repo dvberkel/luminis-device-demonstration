@@ -14,6 +14,7 @@ io.sockets.on('connection', function(socket){
     socket.emit('id', { 'id': socket.id });
 
     socket.on('presentation', function(){
+	console.log('presentation');
 	presentations[socket.id] = socket;
     });
 
@@ -22,9 +23,10 @@ io.sockets.on('connection', function(socket){
     })
 
     socket.on('motion', function(event){
-	console.log('event');
 	event.id = socket.id;
 	for (var id in presentations) {
+            console.log(event);
+
 	    presentations[id].emit('motion', event);
 	}
     });
