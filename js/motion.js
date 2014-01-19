@@ -15,15 +15,16 @@ window.Motion = (function (Observable) {
         this.notify();
     };
 
-    var BaseMap = function () {
+    var BaseMap = function (Base) {
         Observable.call(this);
         this.collection = {};
+        this.Base = Base;
     };
     BaseMap.prototype = new Observable();
     BaseMap.prototype.update = function (id, event) {
         var isNew = false;
         if (! this.collection[id]) {
-            this.collection[id] = new Data();
+            this.collection[id] = new this.Base();
             isNew = true;
         }
         event.id = id;
@@ -49,7 +50,7 @@ window.Motion = (function (Observable) {
         return this._container;
     };
 
-    var BaseMapView = Motion.DataMapView = function (model, parent, View) {
+    var BaseMapView = function (model, parent, View) {
         this.views = {};
         this.model = model;
         this.parent = parent;
@@ -104,7 +105,7 @@ window.Motion = (function (Observable) {
     Data.prototype = new Base();
 
     var DataMap = Motion.DataMap = function () {
-        BaseMap.call(this);
+        BaseMap.call(this, Data);
     };
     DataMap.prototype = new BaseMap();
 
@@ -135,7 +136,7 @@ window.Motion = (function (Observable) {
     Total.prototype = new Base();
 
     var TotalMap = Motion.TotalMap = function () {
-        BaseMap.call(this);
+        BaseMap.call(this, Total);
     };
     TotalMap.prototype = new BaseMap();
 

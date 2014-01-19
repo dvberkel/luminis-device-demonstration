@@ -1,4 +1,4 @@
-/* global window:false, document:false, Reveal:false, io:false, Motion:false, console:false */
+/* global window:false, document:false, Reveal:false, io:false, Motion:false */
 (function (Reveal, io, Motion, undefined) {
     'use strict';
 
@@ -11,6 +11,15 @@
         }
     });
 
+    var totalDataMap = new Motion.TotalMap();
+
+    var totalDataMapView;
+    Reveal.addEventListener('total-events', function () {
+        if (!totalDataMapView) {
+            totalDataMapView = new Motion.TotalMapView(totalDataMap, document.getElementById('total-data'));
+        }
+    });
+
     var socket = io.connect(window.location.origin);
     socket.emit('presentation', {});
 
@@ -19,6 +28,6 @@
     });
 
     socket.on('total', function (event) {
-        console.log(event);
+        totalDataMap.update(event.id, event);
     });
 })(Reveal, io, Motion);

@@ -15,10 +15,16 @@
     [
         "device-orientation.md",
         "data-acquisition.md",
+        {
+            "filename": "data.html",
+            "attr": {
+                "data-state": "motion-events"
+            }
+        },
 	{
-	    "filename": "data.html",
+	    "filename": "total.html",
 	    "attr": {
-		"data-state": "motion-events"
+		"data-state": "total-events"
 	    }
 	}
     ]
