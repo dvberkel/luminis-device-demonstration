@@ -9,6 +9,10 @@
         if (!motionDataMapView) {
             motionDataMapView = new Motion.DataMapView(motionDataMap, document.getElementById('motion-data'));
         }
+        var link = document.getElementById('link');
+        var url = window.location.origin + '/static/device.html';
+        link.setAttribute('href', url);
+        link.textContent = url;
     });
 
     var totalDataMap = new Motion.TotalMap();
