@@ -27,6 +27,12 @@
             "attr": {
                 "data-state": "total-events"
             }
+        },
+        {
+            "filename": "sum.html",
+            "attr": {
+                "data-state": "total-sum"
+            }
         }
     ]
 ]

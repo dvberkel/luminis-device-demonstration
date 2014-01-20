@@ -20,6 +20,13 @@
         }
     });
 
+    var sumView;
+    Reveal.addEventListener('total-sum', function () {
+        if (!sumView) {
+            sumView = new Motion.SumView(totalDataMap, document.getElementById('total-sum'));
+        }
+    });
+
     var socket = io.connect(window.location.origin);
     socket.emit('presentation', {});
 

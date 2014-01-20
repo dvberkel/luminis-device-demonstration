@@ -170,13 +170,14 @@ window.Motion = (function (Observable) {
     var SumView = Motion.SumView = function (model, parent) {
         this.model = model;
         this.parent = parent;
+        this.formatter = Motion.format.decimal(2);
         this.model.addListener(this.update.bind(this));
         this.model.addListener('update', this.update.bind(this));
         this.update();
     };
     SumView.prototype.update = function () {
         var container = this.container();
-        container.textContent = this.model.sum();
+        container.textContent = this.formatter(this.model.sum());
     };
     SumView.prototype.container = function () {
         return this.parent;
