@@ -34,5 +34,11 @@
                 "data-state": "total-sum"
             }
         }
-    ]
+    ],
+    {
+        "filename": "goodbye.html",
+        "attr": {
+	    "data-state": "goodbye"
+	}
+    }
 ]
