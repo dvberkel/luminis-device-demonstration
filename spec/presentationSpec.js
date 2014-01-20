@@ -423,7 +423,7 @@ describe('Motion', function(){
 	    var sumView = new Motion.SumView(model, parent);
 
 	    expect(model.sum()).toBe(6);
-	    expect(parent.textContent).toBe('6');
+	    expect(parent.textContent).toBe('6.00');
 	});
 
 	it('should update when one of the models changes', function(){
@@ -431,7 +431,42 @@ describe('Motion', function(){
 
 	    model.update('a', { total: 2 });
 
-	    expect(parent.textContent).toBe('7');
+	    expect(parent.textContent).toBe('7.00');
+	});
+    });
+
+    describe('CircleView', function(){
+	var circle;
+	var model;
+
+	it('should exist', function(){
+	    expect(Motion.CircleView).toBeDefined();
+	});
+
+	beforeEach(function(){
+	    circle = document.createElement('div');
+	});
+
+	beforeEach(function(){
+	    model = new Motion.TotalMap();
+	    model.update('a', { total: 1 });
+	    model.update('b', { total: 2 });
+	    model.update('c', { total: 3 });
+	});
+
+	it('should set radius of circle', function(){
+	    var sumView = new Motion.CircleView(model, circle);
+
+	    expect(model.sum()).toBe(6);
+	    expect(circle.getAttribute('r')).toBe('6.00');
+	});
+
+	it('should update when one of the models changes', function(){
+	    var sumView = new Motion.CircleView(model, circle);
+
+	    model.update('a', { total: 2 });
+
+	    expect(circle.getAttribute('r')).toBe('7.00');
 	});
     });
 });

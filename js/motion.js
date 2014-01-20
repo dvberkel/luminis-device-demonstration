@@ -183,6 +183,23 @@ window.Motion = (function (Observable) {
         return this.parent;
     };
 
+    var CircleView = Motion.CircleView = function (model, circle) {
+        this.model = model;
+        this.circle = circle;
+        this.formatter = Motion.format.decimal(2);
+        this.model.addListener(this.update.bind(this));
+        this.model.addListener('update', this.update.bind(this));
+        this.update();
+    };
+    CircleView.prototype.update = function () {
+        var container = this.container();
+        container.setAttribute('r', this.formatter(this.model.sum()));
+    };
+    CircleView.prototype.container = function () {
+        return this.circle;
+    };
+
+
     Motion.format = {};
     Motion.format.standard = standardFormatter;
     Motion.format.decimal = function (decimals) {
